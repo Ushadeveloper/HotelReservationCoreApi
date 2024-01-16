@@ -22,7 +22,7 @@ namespace HotelReservation.Controllers
         //Display Get All ..............................
 
         [HttpGet("api/Guest")]
-        public async Task<IActionResult> GetGuest()
+        public async Task<IActionResult> DisplayGuest()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace HotelReservation.Controllers
 
         [HttpGet("api/Guest/{id}")]
 
-        public async Task<IActionResult> GetGuest(int id)
+        public async Task<IActionResult> DisplayGuestId(int id)
         {
             try
             {
@@ -78,14 +78,73 @@ namespace HotelReservation.Controllers
                 {
                     return NotFound();
                 }
-                
+
             }
             catch (Exception ex)
             {
-              return  this.BadRequest(ex.Message);
+                return this.BadRequest(ex.Message);
             }
         }
 
+        //Put
+
+        [HttpPut("api/Guest/{id}")]
+
+        public async Task<IActionResult> ChangeGuest(int id, [FromBody] Guest guest)
+        {
+            try
+            {
+                var guestget = await _guestService.GetGuest(id);
+                if (guestget == null)
+                {
+                    return this.NotFound($"Guest {id} not found..");
+                }
+                guest.Id = id;
+                var result = await _guestService.UpdateGuest(guest);
+                if (result > 0)
+                {
+                    return this.Ok("True");
+
+                }
+                else
+                {
+                    return this.BadRequest("False");
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
+        //Delete
+
+        [HttpDelete("api/Guest/{id}")]
+
+        public async Task<IActionResult> TerminateGuest(int id)
+        {
+            try
+            {
+                var guestget = await _guestService.GetGuest(id);
+                if (guestget == null)
+                {
+                    return this.NotFound($"Guest {id} not found..");
+                }
+                var result = await _guestService.DeleteGuest(id);
+                if (result > 0)
+                {
+                    return this.Ok("True");
+
+                }
+                else
+                {
+                    return this.BadRequest("False");
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
 
     }
 }
