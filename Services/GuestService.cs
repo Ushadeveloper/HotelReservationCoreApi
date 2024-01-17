@@ -46,7 +46,7 @@ namespace HotelReservation.Services
             //var dtDob = DateTime.ParseExact(dob, "dd/mm/yyyy", CultureInfo.InvariantCulture);
 
             var query = $"insert into Guest ( Name, DOB, Email, Phone , Address ) " +
-                $"values ('{guest.Name}',convert(date, '{testDate}'),'{guest.Email}'," +
+                $"values ('{guest.Name}', '{testDate}','{guest.Email}'," +
                 $"'{guest.Phone}','{guest.Address}') ;";
 
             using (IDbConnection connection = new SqlConnection(DBconnection.dbConnectionString))
